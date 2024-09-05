@@ -1,83 +1,57 @@
 import React from 'react';
-
-import Personas from '../../Personas';
-const styles = {
-  homeContainer: {
-    textAlign: 'center',
-    padding: '20px',
-    backgroundColor: '#f9f9f9',
-  },
-  homeHeader: {
-    backgroundColor: '#282c34',
-    color: 'white',
-    padding: '20px',
-  },
-  homeHeaderTitle: {
-    margin: 0,
-    fontSize: '2.5em',
-  },
-  homeHeaderDescription: {
-    fontSize: '1.2em',
-  },
-  navList: {
-    listStyle: 'none',
-    padding: 0,
-  },
-  navItem: {
-    display: 'inline',
-    margin: '0 10px',
-  },
-  navLink: {
-    color: '#61dafb',
-    textDecoration: 'none',
-  },
-  navLinkHover: {
-    textDecoration: 'underline',
-  },
-  homeMain: {
-    marginTop: '20px',
-  },
-  ctaButton: {
-    padding: '10px 20px',
-    fontSize: '1.2em',
-    backgroundColor: '#61dafb',
-    border: 'none',
-    borderRadius: '5px',
-    color: 'white',
-    cursor: 'pointer',
-  },
-  ctaButtonHover: {
-    backgroundColor: '#21a1f1',
-  },
-};
+import { Link } from 'react-router-dom';
+import Personas from '../Personas';
 
 const Home = () => {
   return (
     <div style={styles.homeContainer}>
-      <header style={styles.homeHeader}>
-        <h1 style={styles.homeHeaderTitle}>Bienvenido a Pádel Club</h1>
-        <p style={styles.homeHeaderDescription}>
-          La mejor aplicación para gestionar tus partidos de pádel.
-        </p>
-        <nav>
-          <ul style={styles.navList}>
-            <li style={styles.navItem}><a href="#features" style={styles.navLink}>Características</a></li>
-            <li style={styles.navItem}><a href="#about" style={styles.navLink}>Sobre Nosotros</a></li>
-            <li style={styles.navItem}><a href="#contact" style={styles.navLink}>Contacto</a></li>
-          </ul>
-        </nav>
-      </header>
-      <main style={styles.homeMain}>
-        <button
-          style={styles.ctaButton}
-          onMouseOver={e => e.currentTarget.style.backgroundColor = styles.ctaButtonHover.backgroundColor}
-          onMouseOut={e => e.currentTarget.style.backgroundColor = styles.ctaButton.backgroundColor}
-        >
-          Comienza Ahora
-        </button>
-      </main>
+      <h1 style={styles.headerTitle}>Lista de Personas</h1>
+      <Link to="/Estadisticas" style={styles.statsLink}>Ver Estadísticas</Link>
+      <ul style={styles.personList}>
+        {Personas.map(persona => (
+          <li key={persona.id} style={styles.personItem}>
+            <Link to={`/person/${persona.id}`} style={styles.personLink}>
+              <h3>{persona.nombre} {persona.apellido}</h3>
+              <p>Email: {persona.email}</p>
+              <p>Edad: {persona.edad}</p>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
+};
+
+const styles = {
+  homeContainer: {
+    padding: '20px',
+    backgroundColor: '#f9f9f9',
+  },
+  headerTitle: {
+    fontSize: '24px',
+    marginBottom: '20px',
+    textAlign: 'center',
+  },
+  personList: {
+    listStyleType: 'none',
+    padding: '0',
+  },
+  personItem: {
+    padding: '10px',
+    borderBottom: '1px solid #ddd',
+  },
+  personLink: {
+    textDecoration: 'none',
+    color: 'inherit',
+  },
+  statsLink: {
+    display: 'block',
+    marginBottom: '20px',
+    textDecoration: 'none',
+    color: '#007BFF',
+    fontSize: '18px',
+    textAlign: 'center',
+  },
 };
 
 export default Home;

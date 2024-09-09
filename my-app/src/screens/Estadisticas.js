@@ -1,35 +1,59 @@
-import React from 'react';
-import Personas from '../Personas'; // Asegúrate de que esta ruta sea correcta
+import React, { useState, useEffect } from 'react';
+import Personas from '../Personas';
 
 const Estadisticas = () => {
-  // Convierte las edades a números y filtra las personas mayores de 35 años
-  const personas = Personas.map(persona => ({
-    ...persona,
-    edad: parseInt(persona.edad, 10) // Convertir edad a número
-  }));
-  
-  const mayoresDe35 = personas.filter(persona => persona.edad > 35);
+  // Definición de estados
+  const [personasConEdadNumerica, setPersonasConEdadNumerica] = useState([]);
+  const [edadMaxima, setEdadMaxima] = useState(null);
+  const [edadMinima, setEdadMinima] = useState(null);
+  const [personasConEdadMaxima, setPersonasConEdadMaxima] = useState([]);
+  const [personasConEdadMinima, setPersonasConEdadMinima] = useState([]);
 
-  // Encuentra la edad máxima y mínima
-  const edadMaxima = Math.max(...personas.map(p => p.edad));
-  const edadMinima = Math.min(...personas.map(p => p.edad));
+  useEffect(() => {
+    
+    const personasConEdadNumerica = Personas.map(persona => {
+      const edad = parseInt(persona.edad, 10);
+      return {
+        ...persona,
+        edad: isNaN(edad) ? null : edad 
+      };
+    }).filter(persona => persona.edad !== null); 
 
-  // Encuentra las personas con la edad máxima y mínima
-  const personasMayorEdad = personas.filter(persona => persona.edad === edadMaxima);
-  const personasMenorEdad = personas.filter(persona => persona.edad === edadMinima);
+    if (personasConEdadNumerica.length === 0) {
+      
+      return;
+    }
+
+   
+    const maxEdad = Math.max(...personasConEdadNumerica.map(p => p.edad));
+    const minEdad = Math.min(...personasConEdadNumerica.map(p => p.edad));
+
+    
+    const personasMax = personasConEdadNumerica.filter(persona => persona.edad === maxEdad);
+    const personasMin = personasConEdadNumerica.filter(persona => persona.edad === minEdad);
+
+    
+    setPersonasConEdadNumerica(personasConEdadNumerica);
+    setEdadMaxima(maxEdad);
+    setEdadMinima(minEdad);
+    setPersonasConEdadMaxima(personasMax);
+    setPersonasConEdadMinima(personasMin);
+  }, []); 
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Estadísticas</h1>
       <div style={styles.section}>
         <h2 style={styles.subtitle}>Personas mayores de 35 años:</h2>
-        <p style={styles.info}>{mayoresDe35.length}</p>
+        <p style={styles.info}>
+          {personasConEdadNumerica.filter(persona => persona.edad > 35).length}
+        </p>
       </div>
       <div style={styles.section}>
         <h2 style={styles.subtitle}>Persona(s) de mayor edad:</h2>
         <p style={styles.info}>
-          {personasMayorEdad.length > 0 ? (
-            personasMayorEdad.map(p => (
+          {personasConEdadMaxima.length > 0 ? (
+            personasConEdadMaxima.map(p => (
               <span key={p.id}>{p.nombre} {p.apellido} </span>
             ))
           ) : (
@@ -40,8 +64,8 @@ const Estadisticas = () => {
       <div style={styles.section}>
         <h2 style={styles.subtitle}>Persona(s) de menor edad:</h2>
         <p style={styles.info}>
-          {personasMenorEdad.length > 0 ? (
-            personasMenorEdad.map(p => (
+          {personasConEdadMinima.length > 0 ? (
+            personasConEdadMinima.map(p => (
               <span key={p.id}>{p.nombre} {p.apellido} </span>
             ))
           ) : (

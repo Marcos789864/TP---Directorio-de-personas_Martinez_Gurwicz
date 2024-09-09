@@ -1,13 +1,13 @@
 import React from 'react';
-import { useParams } from 'react-router-dom'; // Para obtener parámetros de la URL
-import Personas from '../Personas'; // Asegúrate de que esta ruta es correcta
+import { useParams } from 'react-router-dom'; 
+import Personas from '../Personas'; 
 
 const Persona = () => {
-  const { id } = useParams(); // Obtén el ID de la URL
-  const persona = Personas.find(p => p.id === id); // Encuentra la persona con ese ID
+  const { id } = useParams(); 
+  const persona = Personas.find(p => p.id === id);
 
   if (!persona) {
-    return <p>Persona no encontrada</p>; // Mensaje si no se encuentra la persona
+    return <p>Persona no encontrada</p>; 
   }
 
   return (
